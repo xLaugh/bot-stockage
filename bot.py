@@ -62,14 +62,12 @@ async def update_coffre_message():
 @bot.command(name='add')
 @commands.has_permissions(administrator=True)
 async def add_item(ctx, *, item_name):
-    # VÃ©rifier si l'item existe dÃ©jÃ  dans la base de donnÃ©es
     cursor.execute('SELECT item_name FROM items WHERE item_name = %s', (item_name,))
     item_exists = cursor.fetchone()
 
     if item_exists:
         await ctx.send(f"L'item {item_name} existe dÃ©jÃ  dans la base de donnÃ©es.")
     else:
-        # Ajouter l'item Ã  la base de donnÃ©es
         cursor.execute('INSERT INTO items (item_name) VALUES (%s)', (item_name,))
         conn.commit()
         await ctx.send(f'Item ajoutÃ© Ã  la base de donnÃ©es : {item_name}')
